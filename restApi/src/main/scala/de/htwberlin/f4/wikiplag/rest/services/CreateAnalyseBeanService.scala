@@ -33,7 +33,7 @@ object CreateAnalyseBeanService {
     plagIndices = List(0) ::: plagIndices ::: List(rawInputText.length)
     var rawTextSplit = Functions.SplitByMultipleIndices(plagIndices, rawInputText)
 
-    var span ="""<span id="%d" class="input_plag">%s</span>"""
+    var span ="""<span id='%d' class='input_plag'>%s</span>"""
 
     model.tagged_input_text = rawTextSplit.zipWithIndex.map(x => {
       //even ones are plagiarisms
