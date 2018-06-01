@@ -7,5 +7,6 @@ import de.htwberlin.f4.wikiplag.utils.Functions
   *
   * @see README.md or mock.json in webapp. */
 @SerialVersionUID(1)
-case class AnalyseBean(var plags: List[WikiPlagiarism], var tagged_input_text: String = "") extends Serializable {
+case class AnalyseBean(var plags: List[WikiPlagiarism], var elapsed_time: Long, var tagged_input_text: String = "")
+  extends Serializable {
 }

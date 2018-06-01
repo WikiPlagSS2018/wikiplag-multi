@@ -34,7 +34,8 @@ class WikiPlagiarismService(cassandraClient: CassandraClient) {
         val wikiArticle = wikiArticlesMap(x._2)
         val excerptTuple = findExactWikipediaExcerpt(x._1, wikiArticle.text, n)
         val excerpt = combineToSpan(excerptTuple._1, excerptTuple._2, excerptTuple._3)
-        new WikiExcerpt(wikiArticle.title, wikiArticle.docId, startInInputText, endInInputText, excerpt)
+        new WikiExcerpt(wikiArticle.title, wikiArticle.docId, startInInputText, endInInputText, excerpt,
+          excerptTuple._4 , excerptTuple._5)
       })
 
       new WikiPlagiarism(x._2, excerpts)
@@ -54,18 +55,18 @@ class WikiPlagiarismService(cassandraClient: CassandraClient) {
     *
     * @return a tuple of (n-chars before, plagiarism, n-chars after)
     **/
-  private def findExactWikipediaExcerpt(tokenizedMatch: Vector[String], wikiText: String, n: Int): Tuple3[String, String, String] = {
+  private def findExactWikipediaExcerpt(tokenizedMatch: Vector[String], wikiText: String, n: Int): (String, String, String, Int, Int) = {
     try {
       findExactWikipediaExcerptOrThrow(tokenizedMatch, wikiText, n)
     } catch {
       //if there was an exception write the stack trace and just concatenate the tokens
       case e: Exception =>
         e.printStackTrace()
-        ("", tokenizedMatch.mkString(" "), "")
+        ("", tokenizedMatch.mkString(" "), "", 0, 0)
     }
   }
 
-  private def findExactWikipediaExcerptOrThrow(tokenizedMatch: Vector[String], wikiText: String, n: Int): Tuple3[String, String, String] = {
+  private def findExactWikipediaExcerptOrThrow(tokenizedMatch: Vector[String], wikiText: String, n: Int): (String, String, String, Int, Int) = {
     val wikiTextLower = wikiText.toLowerCase
     //find all positions of each word and remove those with no results
     val nonEmptyOrderedTokensPositionsWithTokens = tokenizedMatch.map(x => (x, Functions.allIndicesOf(wikiTextLower, x))).filter(_._2.nonEmpty).toList
@@ -115,6 +116,6 @@ class WikiPlagiarismService(cassandraClient: CassandraClient) {
     val plag = wikiText.slice(plagStartPosition, plagEndPosition).replace("\n", "")
     val after = wikiText.slice(plagEndPosition, afterEndPosition).replace("\n", "")
 
-    (before, plag, after)
+    (before, plag, after, plagStartPosition.toInt, plagEndPosition.toInt)
   }
 }

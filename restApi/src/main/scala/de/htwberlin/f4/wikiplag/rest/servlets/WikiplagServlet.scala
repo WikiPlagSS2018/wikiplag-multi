@@ -8,6 +8,7 @@ import de.htwberlin.f4.wikiplag.rest.services.CreateAnalyseBeanService
 import de.htwberlin.f4.wikiplag.utils.CassandraParameters
 import de.htwberlin.f4.wikiplag.utils.database.CassandraClient
 import org.apache.spark.SparkContext
+import org.joda.time.{DateTime, DateTimeZone}
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra._
 import org.scalatra.json._
@@ -101,6 +102,7 @@ class WikiplagServlet extends ScalatraServlet with JacksonJsonSupport {
     println("WikiplagServlet: post /wikiplag/analyse")
     contentType = formats("json")
     try {
+      val start_time = DateTime.now(DateTimeZone.UTC).getMillis
       // read json input file and converts it to Text object
       val jsonString = parse(request.body)
       val textObject = jsonString.extract[Text]
@@ -110,6 +112,7 @@ class WikiplagServlet extends ScalatraServlet with JacksonJsonSupport {
       val plagiarismExcerpts = new WikiPlagiarismService(cassaandraClient).createWikiPlagiarisms(plagiarisms, N_CHARS_BEFORE_AND_AFTER_PLAG_MATCH)
       //add the span tags for the input text
       val result = CreateAnalyseBeanService.createAnalyseBean(plagiarismExcerpts, textObject.text)
+      result.elapsed_time = DateTime.now(DateTimeZone.UTC).getMillis - start_time
       result
     } catch {
       case e: org.json4s.MappingException => halt(400, "Malformed JSON")

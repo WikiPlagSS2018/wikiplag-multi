@@ -16,7 +16,7 @@ object CreateAnalyseBeanService {
     *
     */
   def createAnalyseBean(plags: List[WikiPlagiarism], rawInputText: String): AnalyseBean = {
-    val model = AnalyseBean(plags)
+    val model = AnalyseBean(plags, 0)
 
     if (rawInputText.isEmpty) {
       model.tagged_input_text = ""
