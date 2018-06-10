@@ -89,6 +89,23 @@ lazy val plagiarismFinder = (project in file("plagiarismFinder"))
 
 
 /* ************************************************************************* *\
+|                         Word2Vec ANALYSER Project                           |
+\* ************************************************************************* */
+lazy val plagFinderWord2Vec = (project in file("plagFinderWord2Vec"))
+  .settings(
+    commonSettings,
+    name := "plagFinderWord2Vec",
+    libraryDependencies ++= testDependencies,
+    libraryDependencies ++= sparkDependencies,
+    libraryDependencies ++= Seq(
+      //deeplearning4j on spark
+      "org.deeplearning4j" %% "dl4j-spark" % "0.9.1_spark_2"
+      //add other dependencies for the analyser project here
+    )
+  ).dependsOn(utils)
+
+
+/* ************************************************************************* *\
 |                        WIKIPEDIA-IMPORTER Project                           |
 \* ************************************************************************* */
 lazy val wikipediaImporter = (project in file("wikipediaImporter"))
