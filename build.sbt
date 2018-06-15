@@ -110,6 +110,31 @@ lazy val plagFinderWord2Vec = (project in file("plagFinderWord2Vec"))
 
 
 /* ************************************************************************* *\
+|                  WIKIPEDIA-IMPORTER (word2vec) Project                      |
+\* ************************************************************************* */
+lazy val wikiImporterForWord2Vec = (project in file("wikiImporterForWord2Vec"))
+  .settings(
+    commonSettings,
+    name := "WikiPlagImporterForWord2Vec",
+    libraryDependencies ++= testDependencies,
+    libraryDependencies ++= sparkDependencies_compile,
+    libraryDependencies ++= cassandraDependencies,
+    libraryDependencies ++= Seq(
+      //command line arguments parsing helper
+      "commons-cli" % "commons-cli" % "1.2",
+      //used for parsing xml by the WikidumpParser
+      "org.unbescape" % "unbescape" % "1.1.4.RELEASE",
+      "com.databricks" % "spark-xml_2.11" % "0.4.1",
+      //read config files easily
+      "com.typesafe" % "config" % "1.3.1"
+    ),
+    //configuration for the sbt-assembly plugin
+    assemblyJarName in assembly := "wiki_importer_word2Vec.jar",
+    mainClass in assembly := Some("de.htwberlin.f4.wikiImporterWord2Vec.SparkWord2Vec")
+  ).dependsOn(utils)
+
+
+/* ************************************************************************* *\
 |                        WIKIPEDIA-IMPORTER Project                           |
 \* ************************************************************************* */
 lazy val wikipediaImporter = (project in file("wikipediaImporter"))

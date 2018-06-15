@@ -1,0 +1,10 @@
+{
+  username="",
+  password="",
+  host="",
+  port="9042",
+  articles-table="",
+  inverse-index-table="",
+  tokenized-table="",
+  keyspace=""
+}
