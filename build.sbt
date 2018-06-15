@@ -31,6 +31,7 @@ lazy val testDependencies = Seq(
   "org.slf4j" % "slf4j-simple" % "1.7.21" % "test",
   "junit" % "junit" % "4.11" % "test",
   "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+  //"org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
 
 lazy val sparkDependencies = Seq(
