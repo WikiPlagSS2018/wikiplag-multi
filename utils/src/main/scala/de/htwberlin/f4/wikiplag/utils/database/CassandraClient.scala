@@ -81,4 +81,12 @@ class CassandraClient(sc: SparkContext, cassandraParameters: CassandraParameters
     val result = df.select(ArticlesTable.DocId, ArticlesTable.WikiText,ArticlesTable.Title).where(ArticlesTable.DocId + " in ?", docIds.toSet)
     result
   }
+
+  /**
+    * Author: Laura H.
+    * get all wiki articles from cassandra db
+    */
+  def getAllArticles(): Map[Int, Document] = {
+    return null
+  }
 }

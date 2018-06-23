@@ -4,7 +4,7 @@ import org.junit.Assert._
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 
-class PlagiarismFinderW2VTest extends AssertionsForJUnit {
+object PlagiarismFinderW2VTest extends AssertionsForJUnit {
 
 
 }
