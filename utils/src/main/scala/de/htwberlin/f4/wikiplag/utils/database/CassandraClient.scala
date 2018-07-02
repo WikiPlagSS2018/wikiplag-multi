@@ -85,8 +85,12 @@ class CassandraClient(sc: SparkContext, cassandraParameters: CassandraParameters
   /**
     * Author: Laura H.
     * get all wiki articles from cassandra db
+    * result is a map with per Wiki Article: (key: int DocId, value: Document(DocId, Title, Text))
     */
   def getAllArticles(): Map[Int, Document] = {
-    return null
+    val table = sc.cassandraTable(cassandraParameters.keyspace, cassandraParameters.articlesTable)
+    // has docid, title, wikitext
+    val allArticlesFromDB = table.select(ArticlesTable.DocId, ArticlesTable.Title, ArticlesTable.WikiText)
+    allArticlesFromDB.map(x => x.getInt(ArticlesTable.DocId) -> new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))).collect.toMap
   }
 }

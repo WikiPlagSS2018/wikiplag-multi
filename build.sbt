@@ -99,11 +99,6 @@ lazy val plagFinderWord2Vec = (project in file("plagFinderWord2Vec"))
     libraryDependencies ++= testDependencies,
     libraryDependencies ++= sparkDependencies,
     libraryDependencies ++= Seq(
-      //deeplearning4j on spark
-      // https://mvnrepository.com/artifact/org.deeplearning4j/dl4j-spark
-      "org.deeplearning4j" %% "dl4j-spark" % "0.9.1_spark_2",
-      // https://mvnrepository.com/artifact/org.nd4j/nd4j
-      "org.nd4j" % "nd4j" % "0.9.1" pomOnly()
       //add other dependencies for the analyser project here
     )
   ).dependsOn(utils)
