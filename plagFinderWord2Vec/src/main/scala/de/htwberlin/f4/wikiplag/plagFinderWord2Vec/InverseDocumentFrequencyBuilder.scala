@@ -13,50 +13,55 @@ class InverseDocumentFrequencyBuilder(val cassandraClient: CassandraClient) {
 
   def buildInverseDocFrequency(): Map[String, Int] = {
 
-    def preprocess(texts: List[String]): List[String] = {
-      var allWords = ""
-      for (text <- texts) {
-        //allWords.concat(InverseIndexBuilderImpl.tokenizeAndNormalize(text).toString())
-        allWords = allWords + InverseIndexBuilderImpl.tokenizeAndNormalize(text)
-        // System.out.println("TOKENIZE AND NORMALIZE  " + InverseIndexBuilderImpl.tokenizeAndNormalize(text)) //TOKENIZE AND NORMALIZE  List(americium,
-        // System.out.println("WORDS  " + allWords) //WORD  List()List(americium,
+    /*    def flatten(l: List[List[String]]): List[String] = {
+          def _flatten(res: List[Any], rem: List[Any]):List[String] = rem match {
+            case Nil => List(res.toString())
+            case (h:List[_])::Nil => _flatten(res, h)
+            case (h:List[_])::tail => _flatten(res:::h, tail)
+            case h::tail => _flatten(res:::List(h), tail)
+          }
+          _flatten(List(), l)
+        }*/
 
-      }
+    def flatten(l: List[Any]): List[Any] = l match {
+      case Nil => Nil
+      case (h: List[Any]) :: tail => flatten(h) ::: flatten(tail)
+      case h :: tail => h :: flatten(tail)
+    }
+
+    def preprocess(text: String): List[String] = {
+      val allWords = InverseIndexBuilderImpl.tokenizeAndNormalize(text)
+
+      System.out.println("allWords " + allWords)
       //Todo: think about sorting out for example single chars here, since they do not convey the topic of an article
-      System.out.println("WORDS CLASS " + allWords.getClass)
-     // System.out.println("WORDS " + allWords)
-
-      List(allWords)
+      allWords
     }
 
     def countTheWords(l: List[String]): List[(String, Int)] = {
       l.foldLeft(Map.empty[String, Int]) { (count, word) => count + (word -> (count.getOrElse(word, 0) + 1)) }.toList //(Int, String) => Int
     }
 
+
+
     val inputMapContainsDocuments = cassandraClient.getAllArticles() //get all Documents from DB
-    // val inputMapWithStrings = inputMapContainsDocuments.mapValues(doc => doc.text)
-    // val inputTexts = inputMapWithStrings.values.reduceLeft((x, String) => String)
-    // val inputTexts = inputMapContainsDocuments.values.seq.flatMap(doc => doc.text).toString()
     val inputTexts = inputMapContainsDocuments.values.seq.map(doc => doc.text).toList
-    // System.out.println("input string  " + inputTexts)
-    System.out.println("input string  " + inputTexts.size)
-    System.out.println("input string  " + inputTexts.getClass)
+
+    def getDocumentAsString: String = {
+      flatten(for (text <- inputTexts) yield text).toString()
+    }
+
+    val sentencesTokenized = preprocess(getDocumentAsString)
 
 
-    //val sentencesTokenized = InverseIndexBuilderImpl.tokenizeAndNormalize(inputTexts)
-    //System.out.println("sentences tokenized  " + sentencesTokenized.size)
-    //System.out.println("sentences tokenized  " + sentencesTokenized.getClass)
-    val sentencesTokenized = preprocess(inputTexts)
+
+
     System.out.println("sentences tokenized  " + sentencesTokenized)
     System.out.println("sentences tokenized  " + sentencesTokenized.getClass)
 
-
-    //val result = sentencesTokenized.groupBy(identity).par.mapValues(_.size)
-    //val words = sentencesTokenized.split(", ").map(word => (word, 1)).toMap
-    val result = countTheWords(sentencesTokenized)
-    //  System.out.println("result: " + words)
-    result.toMap
-    //Map.empty[String, Int]
+    //  val result = countTheWords(sentencesTokenized)
+    //System.out.println(result)
+    //  result.toMap
+    Map.empty[String, Int]
   }
 
 
