@@ -11,17 +11,20 @@ import scala.collection.immutable.ListMap
   */
 class InverseDocumentFrequencyBuilder(val cassandraClient: CassandraClient) {
 
+  private def preprocess(text: String): List[String] = {
+    val allWords = InverseIndexBuilderImpl.tokenizeAndNormalize(text)
+    //Todo: think about sorting out for example single chars here, since they do not convey the topic of an article
+    allWords
+  }
+
+  private def countTheWords(l: List[String]): Map[String, Int] = {
+    l.foldLeft(Map.empty[String, Int]) { (count, word) => count + (word -> (count.getOrElse(word, 0) + 1)) } //(Int, String) => Int
+  }
+
   def buildInverseDocFrequency(): Map[String, Int] = {
 
-    /*    def flatten(l: List[List[String]]): List[String] = {
-          def _flatten(res: List[Any], rem: List[Any]):List[String] = rem match {
-            case Nil => List(res.toString())
-            case (h:List[_])::Nil => _flatten(res, h)
-            case (h:List[_])::tail => _flatten(res:::h, tail)
-            case h::tail => _flatten(res:::List(h), tail)
-          }
-          _flatten(List(), l)
-        }*/
+    val inputMapContainsDocuments = cassandraClient.getAllArticles() //get all Documents from DB
+    val inputTexts = inputMapContainsDocuments.values.seq.map(doc => doc.text).toList
 
     def flatten(l: List[Any]): List[Any] = l match {
       case Nil => Nil
@@ -29,39 +32,15 @@ class InverseDocumentFrequencyBuilder(val cassandraClient: CassandraClient) {
       case h :: tail => h :: flatten(tail)
     }
 
-    def preprocess(text: String): List[String] = {
-      val allWords = InverseIndexBuilderImpl.tokenizeAndNormalize(text)
-
-      System.out.println("allWords " + allWords)
-      //Todo: think about sorting out for example single chars here, since they do not convey the topic of an article
-      allWords
-    }
-
-    def countTheWords(l: List[String]): List[(String, Int)] = {
-      l.foldLeft(Map.empty[String, Int]) { (count, word) => count + (word -> (count.getOrElse(word, 0) + 1)) }.toList //(Int, String) => Int
-    }
-
-
-
-    val inputMapContainsDocuments = cassandraClient.getAllArticles() //get all Documents from DB
-    val inputTexts = inputMapContainsDocuments.values.seq.map(doc => doc.text).toList
-
     def getDocumentAsString: String = {
       flatten(for (text <- inputTexts) yield text).toString()
     }
 
     val sentencesTokenized = preprocess(getDocumentAsString)
 
-
-
-
-    System.out.println("sentences tokenized  " + sentencesTokenized)
-    System.out.println("sentences tokenized  " + sentencesTokenized.getClass)
-
-    //  val result = countTheWords(sentencesTokenized)
+    val result = countTheWords(sentencesTokenized)
     //System.out.println(result)
-    //  result.toMap
-    Map.empty[String, Int]
+    result
   }
 
 
@@ -75,5 +54,18 @@ class InverseDocumentFrequencyBuilder(val cassandraClient: CassandraClient) {
   def getInverseDocFreqForOneWord(word: String, invDocFreq: Map[String, Int]): Int = {
     invDocFreq.getOrElse(word, 0)
   }
+
+  def testBuildInverseDocFrequency(): Map[String, Int] = {
+    val inputDocContainsOneDocument = cassandraClient.getOneArticle()
+    val inputTextAsString = inputDocContainsOneDocument.text
+
+    val sentencesTokenized = preprocess(inputTextAsString)
+
+    val result = countTheWords(sentencesTokenized)
+    //System.out.println(result)
+    result
+  }
+
+
 
 }

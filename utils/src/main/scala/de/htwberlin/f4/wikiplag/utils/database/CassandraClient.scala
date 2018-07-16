@@ -93,4 +93,15 @@ class CassandraClient(sc: SparkContext, cassandraParameters: CassandraParameters
     val allArticlesFromDB = table.select(ArticlesTable.DocId, ArticlesTable.Title, ArticlesTable.WikiText)
     allArticlesFromDB.map(x => x.getInt(ArticlesTable.DocId) -> new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))).collect.toMap
   }
+
+  def getOneArticle(): Document = {
+    val table = sc.cassandraTable(cassandraParameters.keyspace, cassandraParameters.articlesTable)
+    // has docid, title, wikitext
+    val allArticlesFromDB = table.select(ArticlesTable.DocId, ArticlesTable.Title, ArticlesTable.WikiText)
+    val x = allArticlesFromDB.first()
+    val doc = new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))
+    doc
+    //val all = allArticlesFromDB.map(x => x.getInt(ArticlesTable.DocId) -> new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))).collect.toMap
+    //all....
+  }
 }

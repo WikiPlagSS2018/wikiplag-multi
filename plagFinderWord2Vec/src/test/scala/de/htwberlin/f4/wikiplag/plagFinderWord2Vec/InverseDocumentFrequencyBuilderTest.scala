@@ -1,10 +1,11 @@
 package de.htwberlin.f4.wikiplag.plagFinderWord2Vec
 
+import java.io.PrintWriter
+
 import de.htwberlin.f4.wikiplag.utils.CassandraParameters
 import de.htwberlin.f4.wikiplag.utils.database.CassandraClient
 import org.apache.spark.SparkContext
 import org.junit.Assert._
-import org.junit._
 import org.junit.{After, Before, Test}
 import org.scalatest.junit.AssertionsForJUnit
 
@@ -27,10 +28,12 @@ class InverseDocumentFrequencyBuilderTest extends AssertionsForJUnit {
     sc.stop()
   }
 
+
+
   @Test def testBuildInverseDocFreq(): Unit = {
     val invDocFreq = builder.buildInverseDocFrequency()
 
-    System.out.println("Inverse Document Frequency: " + invDocFreq)
+    writeMapToFile("./ InverseDocumentFrequency.txt", invDocFreq)
 
     assertNotNull(invDocFreq)
   }
@@ -45,4 +48,24 @@ class InverseDocumentFrequencyBuilderTest extends AssertionsForJUnit {
     assertNotNull(sortedInvDocFreq)
     assertSame(List(1), firstElement)
   }
+
+  @Test def testWithOneDocAndWriteMapToFile(): Unit = {
+    val mapToSave = builder.testBuildInverseDocFrequency()
+    def filename = "./InverseDocFreqTestWithOneDoc.txt"
+    writeMapToFile(filename, mapToSave)
+  }
+
+
+  private def writeMapToFile(filename: String, toSave: Map[String, Int]): Unit = {
+    new PrintWriter(filename) {
+      toSave.foreach {
+        case (k, v) =>
+          write(k + ":" + v)
+          write("\n")
+      }
+      close()
+    }
+
+  }
+
 }
