@@ -11,35 +11,17 @@ import scala.collection.immutable.ListMap
   */
 class InverseDocumentFrequencyBuilder(val cassandraClient: CassandraClient) {
 
-  private def preprocess(text: String): List[String] = {
-    val allWords = InverseIndexBuilderImpl.tokenizeAndNormalize(text)
-    //Todo: think about sorting out for example single chars here, since they do not convey the topic of an article
-    allWords
-  }
-
-  private def countTheWords(l: List[String]): Map[String, Int] = {
-    l.foldLeft(Map.empty[String, Int]) { (count, word) => count + (word -> (count.getOrElse(word, 0) + 1)) } //(Int, String) => Int
-  }
 
   def buildInverseDocFrequency(): Map[String, Int] = {
-
     val inputMapContainsDocuments = cassandraClient.getAllArticles() //get all Documents from DB
     val inputTexts = inputMapContainsDocuments.values.seq.map(doc => doc.text).toList
-
-    def flatten(l: List[Any]): List[Any] = l match {
-      case Nil => Nil
-      case (h: List[Any]) :: tail => flatten(h) ::: flatten(tail)
-      case h :: tail => h :: flatten(tail)
-    }
 
     def getDocumentAsString: String = {
       flatten(for (text <- inputTexts) yield text).toString()
     }
 
     val sentencesTokenized = preprocess(getDocumentAsString)
-
     val result = countTheWords(sentencesTokenized)
-    //System.out.println(result)
     result
   }
 
@@ -62,10 +44,24 @@ class InverseDocumentFrequencyBuilder(val cassandraClient: CassandraClient) {
     val sentencesTokenized = preprocess(inputTextAsString)
 
     val result = countTheWords(sentencesTokenized)
-    //System.out.println(result)
     result
   }
 
 
+  private def preprocess(text: String): List[String] = {
+    val allWords = InverseIndexBuilderImpl.tokenizeAndNormalize(text)
+    //Todo: think about sorting out for example single chars here, since they do not convey the topic of an article
+    allWords
+  }
+
+  private def countTheWords(l: List[String]): Map[String, Int] = {
+    l.foldLeft(Map.empty[String, Int]) { (count, word) => count + (word -> (count.getOrElse(word, 0) + 1)) } //(Int, String) => Int
+  }
+
+  private def flatten(l: List[Any]): List[Any] = l match {
+    case Nil => Nil
+    case (h: List[Any]) :: tail => flatten(h) ::: flatten(tail)
+    case h :: tail => h :: flatten(tail)
+  }
 
 }

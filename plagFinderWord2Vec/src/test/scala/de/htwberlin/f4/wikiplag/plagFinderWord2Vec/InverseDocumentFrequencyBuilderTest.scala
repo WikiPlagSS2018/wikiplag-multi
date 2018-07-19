@@ -15,7 +15,7 @@ class InverseDocumentFrequencyBuilderTest extends AssertionsForJUnit {
   var sc: SparkContext = _
 
   @Before
-  def setUp() ={
+  def setUp() = {
     var cassandraParameters = CassandraParameters.readFromConfigFile("app.conf")
     val sparkConf = cassandraParameters.toSparkConf("[Wikiplag] InvDocFreqBuilder")
     sc = new SparkContext(sparkConf)
@@ -28,9 +28,8 @@ class InverseDocumentFrequencyBuilderTest extends AssertionsForJUnit {
     sc.stop()
   }
 
-
-
-  @Test def testBuildInverseDocFreq(): Unit = {
+  @Test
+  def testBuildInverseDocFreq(): Unit = {
     val invDocFreq = builder.buildInverseDocFrequency()
 
     writeMapToFile("./ InverseDocumentFrequency.txt", invDocFreq)
@@ -38,23 +37,26 @@ class InverseDocumentFrequencyBuilderTest extends AssertionsForJUnit {
     assertNotNull(invDocFreq)
   }
 
-  @Test def testBuildSortedInverseDocFreq(): Unit = {
+  @Test
+  def testBuildSortedInverseDocFreq(): Unit = {
     val sortedInvDocFreq = builder.buildSortedInvDocFreq()
 
     val firstElement = sortedInvDocFreq.values.take(1)
 
-    System.out.println("Sorted Inverse Document Frequency: " + sortedInvDocFreq)
+    writeMapToFile("./ SortedInverseDocumentFrequency.txt", sortedInvDocFreq)
 
     assertNotNull(sortedInvDocFreq)
     assertSame(List(1), firstElement)
   }
 
-  @Test def testWithOneDocAndWriteMapToFile(): Unit = {
+  @Test
+  def testWithOneDocAndWriteMapToFile(): Unit = {
     val mapToSave = builder.testBuildInverseDocFrequency()
+
     def filename = "./InverseDocFreqTestWithOneDoc.txt"
+
     writeMapToFile(filename, mapToSave)
   }
-
 
   private def writeMapToFile(filename: String, toSave: Map[String, Int]): Unit = {
     new PrintWriter(filename) {

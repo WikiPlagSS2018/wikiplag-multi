@@ -94,6 +94,12 @@ class CassandraClient(sc: SparkContext, cassandraParameters: CassandraParameters
     allArticlesFromDB.map(x => x.getInt(ArticlesTable.DocId) -> new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))).collect.toMap
   }
 
+
+  /**
+    * Author: Laura H.
+    * gets one wiki article from cassandra db, used for testing purposes
+    * result is a Document(DocId, Title, Text)
+    */
   def getOneArticle(): Document = {
     val table = sc.cassandraTable(cassandraParameters.keyspace, cassandraParameters.articlesTable)
     // has docid, title, wikitext
@@ -101,7 +107,5 @@ class CassandraClient(sc: SparkContext, cassandraParameters: CassandraParameters
     val x = allArticlesFromDB.first()
     val doc = new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))
     doc
-    //val all = allArticlesFromDB.map(x => x.getInt(ArticlesTable.DocId) -> new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))).collect.toMap
-    //all....
   }
 }
