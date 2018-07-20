@@ -1,4 +1,4 @@
-Author: Laura
+Author: Laura H.
 # Finding Plagiarisms with Word2Vec 
 
 ## What is Word2Vec
@@ -87,7 +87,9 @@ We can do that by using [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf)
 (term frequency–inverse document frequency).
 
 Begin with calculating the inverse document frequency: how often is a word used in the whole dataset?
-I already implemented this in wikiplag-multi/plagFinderWord2Vec.
+I already implemented this in wikiplag-multi/plagFinderWord2Vec and has been calculated for 383 articles.
+(For the table with all wikipedia articles (~2 Milion), the spark memory needs to be adjusted or the table 
+needs to be read in batches.)
 
 Then, for each new text to analyse, count the frequency of each word in the text to analyse.
 The words with are rare in the complete dataset, but are more frequently used in the text to analyse, 
