@@ -81,4 +81,31 @@ class CassandraClient(sc: SparkContext, cassandraParameters: CassandraParameters
     val result = df.select(ArticlesTable.DocId, ArticlesTable.WikiText,ArticlesTable.Title).where(ArticlesTable.DocId + " in ?", docIds.toSet)
     result
   }
+
+  /**
+    * Author: Laura H.
+    * get all wiki articles from cassandra db
+    * result is a map with per Wiki Article: (key: int DocId, value: Document(DocId, Title, Text))
+    */
+  def getAllArticles(): Map[Int, Document] = {
+    val table = sc.cassandraTable(cassandraParameters.keyspace, cassandraParameters.articlesTable)
+    // has docid, title, wikitext
+    val allArticlesFromDB = table.select(ArticlesTable.DocId, ArticlesTable.Title, ArticlesTable.WikiText)
+    allArticlesFromDB.map(x => x.getInt(ArticlesTable.DocId) -> new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))).collect.toMap
+  }
+
+
+  /**
+    * Author: Laura H.
+    * gets one wiki article from cassandra db, used for testing purposes
+    * result is a Document(DocId, Title, Text)
+    */
+  def getOneArticle(): Document = {
+    val table = sc.cassandraTable(cassandraParameters.keyspace, cassandraParameters.articlesTable)
+    // has docid, title, wikitext
+    val allArticlesFromDB = table.select(ArticlesTable.DocId, ArticlesTable.Title, ArticlesTable.WikiText)
+    val x = allArticlesFromDB.first()
+    val doc = new Document(x.getInt(ArticlesTable.DocId), x.getString(ArticlesTable.Title), x.getString(ArticlesTable.WikiText))
+    doc
+  }
 }

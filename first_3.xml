@@ -1,0 +1,122 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="de">
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <dbname>dewiki</dbname>
+    <base>https://de.wikipedia.org/wiki/Wikipedia:Hauptseite</base>
+    <generator>MediaWiki 1.31.0-wmf.1</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Medium</namespace>
+      <namespace key="-1" case="first-letter">Spezial</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Diskussion</namespace>
+      <namespace key="2" case="first-letter">Benutzer</namespace>
+      <namespace key="3" case="first-letter">Benutzer Diskussion</namespace>
+      <namespace key="4" case="first-letter">Wikipedia</namespace>
+      <namespace key="5" case="first-letter">Wikipedia Diskussion</namespace>
+      <namespace key="6" case="first-letter">Datei</namespace>
+      <namespace key="7" case="first-letter">Datei Diskussion</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki Diskussion</namespace>
+      <namespace key="10" case="first-letter">Vorlage</namespace>
+      <namespace key="11" case="first-letter">Vorlage Diskussion</namespace>
+      <namespace key="12" case="first-letter">Hilfe</namespace>
+      <namespace key="13" case="first-letter">Hilfe Diskussion</namespace>
+      <namespace key="14" case="first-letter">Kategorie</namespace>
+      <namespace key="15" case="first-letter">Kategorie Diskussion</namespace>
+      <namespace key="100" case="first-letter">Portal</namespace>
+      <namespace key="101" case="first-letter">Portal Diskussion</namespace>
+      <namespace key="828" case="first-letter">Modul</namespace>
+      <namespace key="829" case="first-letter">Modul Diskussion</namespace>
+      <namespace key="2300" case="first-letter">Gadget</namespace>
+      <namespace key="2301" case="first-letter">Gadget Diskussion</namespace>
+      <namespace key="2302" case="case-sensitive">Gadget-Definition</namespace>
+      <namespace key="2303" case="case-sensitive">Gadget-Definition Diskussion</namespace>
+      <namespace key="2600" case="first-letter">Thema</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Alan Smithee</title>
+    <ns>0</ns>
+    <id>1</id>
+    <revision>
+      <id>157406713</id>
+      <parentid>153344835</parentid>
+      <timestamp>2016-08-26T17:01:12Z</timestamp>
+      <contributor>
+        <username>Invisigoth67</username>
+        <id>178175</id>
+      </contributor>
+      <comment>/* Referenzen */ Abschnittsnamen korrigiert</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve">
+	MyText
+</text>
+      <sha1>9i928nk20i9bbmd6ktangrkxcfho0tf</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Actinium</title>
+    <ns>0</ns>
+    <id>3</id>
+    <revision>
+      <id>168261860</id>
+      <parentid>168260283</parentid>
+      <timestamp>2017-08-18T17:31:03Z</timestamp>
+      <contributor>
+        <username>Lómelinde</username>
+        <id>1308992</id>
+      </contributor>
+      <minor />
+      <comment>[[Spezial:LintErrors/fostered|Falsch verschachtelter Inhalt]] Tabellen bitte nicht mit Doppelpunkten einrücken</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve">
+	MyText
+</text>
+      <sha1>jvud34y8r3f9tvqlyv5jvzye9darih0</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Ang Lee</title>
+    <ns>0</ns>
+    <id>5</id>
+    <revision>
+      <id>167881329</id>
+      <parentid>167878331</parentid>
+      <timestamp>2017-08-05T02:25:58Z</timestamp>
+      <contributor>
+        <username>Gustav von Aschenbach</username>
+        <id>234741</id>
+      </contributor>
+      <comment>Änderung 167878331 von [[Special:Contribs/209.87.63.250|209.87.63.250]] rückgängig gemacht; verworren</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve">
+	MyText
+</text>
+      <sha1>os98gsgtb4y5wa57guke65u2pa0cgq4</sha1>
+    </revision>
+  </page>
+<page>
+    <title>Ar (Einheit)</title>
+    <ns>0</ns>
+    <id>114</id>
+    <revision>
+      <id>168553529</id>
+      <parentid>166436400</parentid>
+      <timestamp>2017-08-28T11:21:16Z</timestamp>
+      <contributor>
+        <ip>81.14.207.162</ip>
+      </contributor>
+      <comment>/* Geschichte */ falscher Genitiv</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve">
+	MyText
+</text>
+      <sha1>4j2lxr70l8o8y70t4lfwdyyd7d2ybq5</sha1>
+    </revision>
+  </page>  
+</mediawiki>

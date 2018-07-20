@@ -31,6 +31,7 @@ lazy val testDependencies = Seq(
   "org.slf4j" % "slf4j-simple" % "1.7.21" % "test",
   "junit" % "junit" % "4.11" % "test",
   "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+  //"org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
 
 lazy val sparkDependencies = Seq(
@@ -85,6 +86,46 @@ lazy val plagiarismFinder = (project in file("plagiarismFinder"))
     libraryDependencies ++= Seq(
       //add other dependencies for the analyser project here
     )
+  ).dependsOn(utils)
+
+
+/* ************************************************************************* *\
+|                         Word2Vec ANALYSER Project                           |
+\* ************************************************************************* */
+lazy val plagFinderWord2Vec = (project in file("plagFinderWord2Vec"))
+  .settings(
+    commonSettings,
+    name := "plagFinderWord2Vec",
+    libraryDependencies ++= testDependencies,
+    libraryDependencies ++= sparkDependencies,
+    libraryDependencies ++= Seq(
+      //add other dependencies for the analyser project here
+    )
+  ).dependsOn(utils)
+
+
+/* ************************************************************************* *\
+|                  WIKIPEDIA-IMPORTER (word2vec) Project                      |
+\* ************************************************************************* */
+lazy val wikiImporterForWord2Vec = (project in file("wikiImporterForWord2Vec"))
+  .settings(
+    commonSettings,
+    name := "WikiPlagImporterForWord2Vec",
+    libraryDependencies ++= testDependencies,
+    libraryDependencies ++= sparkDependencies_compile,
+    libraryDependencies ++= cassandraDependencies,
+    libraryDependencies ++= Seq(
+      //command line arguments parsing helper
+      "commons-cli" % "commons-cli" % "1.2",
+      //used for parsing xml by the WikidumpParser
+      "org.unbescape" % "unbescape" % "1.1.4.RELEASE",
+      "com.databricks" % "spark-xml_2.11" % "0.4.1",
+      //read config files easily
+      "com.typesafe" % "config" % "1.3.1"
+    ),
+    //configuration for the sbt-assembly plugin
+    assemblyJarName in assembly := "wiki_importer_word2Vec.jar",
+    mainClass in assembly := Some("de.htwberlin.f4.wikiImporterWord2Vec.SparkWord2Vec")
   ).dependsOn(utils)
 
 
