@@ -1,3 +1,5 @@
+Autor: Akhmad Sadullaev
+
 Diese Paser ist für den Ansatz in Word2Vec nötig.
 
 Dieser extrahiert und bereinigt den Text aus einem Wikipedia-Datenbank-Dump und speichert die Ausgabe (und zwar jeden Satz aus jedem Dokument) in einem
