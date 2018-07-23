@@ -71,7 +71,7 @@ I found that the idea worked and that the quality of the Word2Vec models used ma
 a difference in outcome for, for example, th similarity function. 
 I recommend to find the biggest, most diverse model possible an to test with different 
 models to see what works best.
-(LINK TO A PUBLIC GITHUB)
+See: https://github.com/BaconCookie/PlagiarismDetection
 
 For Java/Scala, there is a library deeplearning4j (dl4j) and nd4j 
 (dl4j is based on nd4j and there are some functions you might need from here).
